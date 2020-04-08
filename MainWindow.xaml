@@ -1,0 +1,105 @@
+﻿<Window x:Class="Covid19Calc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Covid19Calc"
+        mc:Ignorable="d"
+        Title="Расчет стоимости тестирования на Covid-19" 
+        Height="450" 
+        Width="800" 
+        MinHeight="450"
+        MinWidth="800"
+        Icon="icon.ico"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Местонахождение:"/>
+            <ComboBox Grid.Row="2" 
+                      ItemsSource="{Binding Logistics}"
+                      SelectedValue="{Binding SelectedLogistics, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Column="2" Text="Кол-во взрослых:"/>
+            <ComboBox Grid.Column="2" Grid.Row="2"
+                      ItemsSource="{Binding PatientsCount}"
+                      SelectedValue="{Binding SelectedAdultCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Column="4" Text="Кол-во детей:"/>
+            <ComboBox Grid.Column="4" Grid.Row="2" 
+                      ItemsSource="{Binding PatientsCount}"
+                      SelectedValue="{Binding SelectedKidsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Grid.Row="4" Grid.ColumnSpan="5" Text="Необходимые услуги:"/>
+            <DataGrid Grid.Row="6" Grid.ColumnSpan="5"
+                      ItemsSource="{Binding Services}"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserReorderColumns="False"
+                      HorizontalGridLinesBrush="LightGray"
+                      VerticalGridLinesBrush="LightGray"
+                      SelectionMode="Extended"
+                      SelectionUnit="FullRow"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Код" Width="Auto" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Name}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Стоимость" Width="Auto" Binding="{Binding Cost}"/>
+                    <DataGridTextColumn Header="Количество" Width="Auto" Binding="{Binding Count}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Row="8" Grid.ColumnSpan="5" Orientation="Horizontal">
+                <TextBlock Text="Стоимость итого:" FontWeight="Bold"/>
+                
+                <TextBlock Text="{Binding CostTotal}"
+                           FontWeight="Bold"
+                           Margin="6,0,0,0"
+                           Background="{Binding CostTotalBackground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Grid>
+        
+        <Grid Grid.Row="8" Grid.ColumnSpan="5" Height="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="BottomLineTemplate.png"
+                   Stretch="Fill"/>
+            <Image Grid.Column="1" Source="BottomLineContinuesClear.png"/>
+        </Grid>
+    </Grid>
+</Window>
