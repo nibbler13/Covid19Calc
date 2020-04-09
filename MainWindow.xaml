@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:Covid19Calc"
         mc:Ignorable="d"
         Title="Расчет стоимости тестирования на Covid-19" 
-        Height="450" 
+        Height="500" 
         Width="800" 
-        MinHeight="450"
+        MinHeight="500"
         MinWidth="800"
         Icon="icon.ico"
         WindowStartupLocation="CenterScreen">
@@ -27,6 +27,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -82,16 +84,69 @@
             </DataGrid>
 
             <StackPanel Grid.Row="8" Grid.ColumnSpan="5" Orientation="Horizontal">
-                <TextBlock Text="Стоимость итого:" FontWeight="Bold"/>
+                <TextBlock Text="Стоимость итого:" FontWeight="Bold" FontSize="14"/>
                 
                 <TextBlock Text="{Binding CostTotal}"
                            FontWeight="Bold"
+                           FontSize="14"
                            Margin="6,0,0,0"
                            Background="{Binding CostTotalBackground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+
+            <Grid Grid.Row="10" Grid.ColumnSpan="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="6"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="6"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="ФИО пациента*:"/>
+                <TextBox Grid.Column="2" Text="{Binding PatientName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Контактный номер телефона*:"
+                           Grid.Column="4"/>
+                <TextBox Grid.Column="6"
+                         Text="{Binding PatientPhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="2" Text="Адрес вызова*:" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"
+                         Text="{Binding PatientAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="4" Text="Желаемая дата выполнения*:"
+                           VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="2" Grid.Column="6" HorizontalAlignment="Left" 
+                            SelectedDate="{Binding DesiredDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <TextBlock Grid.Row="4" Text="Комментарий:"/>
+                <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="5"
+                         Text="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Grid.Row="6" Grid.ColumnSpan="7"
+                        HorizontalAlignment="Center"
+                        Click="ButtonSend_Click">
+                    <StackPanel Orientation="Horizontal" Margin="6,0,6,0">
+                        <Image Source="SendEmail_16x.png"/>
+                        <TextBlock Text="Отправить заявку в отделение помощи на дому" Margin="6,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </Grid>
-        
-        <Grid Grid.Row="8" Grid.ColumnSpan="5" Height="10">
+
+        <Grid Grid.Row="2" Height="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

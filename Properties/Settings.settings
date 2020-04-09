@@ -1,7 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Covid19Calc.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MailTo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">fastovich@bzklinika.ru</Value>
+    </Setting>
+    <Setting Name="MailCopy" Type="System.String" Scope="User">
+      <Value Profile="(Default)">a.artemeva@bzklinika.ru</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

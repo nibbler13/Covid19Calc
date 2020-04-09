@@ -92,6 +92,12 @@ namespace Covid19Calc {
 
 		public ObservableCollection<ItemService> Services { get; set; } = new ObservableCollection<ItemService>();
 
+		public string PatientName { get; set; }
+		public string PatientPhoneNumber { get; set; }
+		public string PatientAddress { get; set; }
+		public DateTime DesiredDate { get; set; } = DateTime.Now;
+		public string Comment { get; set; }
+
 		public MainWindow() {
 			InitializeComponent();
 			DataContext = this;
@@ -229,6 +235,53 @@ namespace Covid19Calc {
 
 			CostTotalBackground = new SolidColorBrush(Colors.LightGreen);
 			CostTotal = cost.ToString("N0", CultureInfo.CurrentCulture) + " руб.";
+		}
+
+		private void ButtonSend_Click(object sender, RoutedEventArgs e) {
+			string error = "";
+
+			if (DesiredDate.Date < DateTime.Now.Date)
+				error = "Дата выполнения не может быть в прошедшем времени";
+
+			if (string.IsNullOrEmpty(PatientName) ||
+				string.IsNullOrEmpty(PatientPhoneNumber) ||
+				string.IsNullOrEmpty(PatientAddress))
+				error = "Не заполены обязательные поля (отмечены звездочкой)";
+
+			if (string.IsNullOrEmpty(CostTotal) || !CostTotal.Contains("руб"))
+				error = "Не выполнен расчет стоимости";
+
+			if (!string.IsNullOrEmpty(error)) {
+				MessageBox.Show(this, error, "Невозможно отправить заявку", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return;
+			}
+
+			string subject = "Заявка на выполнение теста на Covid-19";
+			string body =
+				"<table border=\"1\">" +
+				"<tr><td>ФИО пациента</td><td><b>" + PatientName + "</b></td></tr>" +
+				"<tr><td>Контактный номер телефона</td><td><b>" + PatientPhoneNumber + "</b></td></tr>" +
+				"<tr><td>Адрес вызова</td><td><b>" + PatientAddress + "</b></td></tr>" +
+				"<tr><td>Желаемая дата выполнения</td><td><b>" + DesiredDate.ToShortDateString() + "</b></td></tr>" +
+				"<tr><td>Комментарий</td><td>" + Comment + "</td></tr>" +
+				"<tr><td>Автор заявки</td><td>" + Environment.UserName + "</td></tr>" +
+				"<tr><td>Время создания</td><td>" + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + "</td></tr></table>" +
+				Environment.NewLine + Environment.NewLine +
+				"<table border=\"1\"><tr><td>Местонахождение</td><td>Кол-во взрослых</td><td>Кол-во детей</td></tr>" +
+				"<tr><th>" + SelectedLogistics + "</th><th><p align=\"center\">" + SelectedAdultCount +
+				"</p></th><th><p align=\"center\">" + SelectedKidsCount + "</p></th></tr></table>" +
+				Environment.NewLine + Environment.NewLine +
+				"<table border=\"1\">" +
+				"<caption>Необходимые услуги</caption>" +
+				"<tr><th>Код</th><th>Наименование</th><th>Стоимость</th><th>Количество</th></tr> ";
+
+			foreach (ItemService item in Services) 
+				body += "<tr><td>" + item.Id + "</td><td>" + item.Name + "</td><td>" + item.Cost + "</td><td>" + item.Count + "</td></tr>";
+
+			body += "<tr><td colspan=\"4\">Стоимость итого: " + CostTotal +"</td></tr></table>";
+
+			string receiver = Properties.Settings.Default.MailTo;
+			SystemMail.SendMail(subject, body, receiver);
 		}
 	}
 }
